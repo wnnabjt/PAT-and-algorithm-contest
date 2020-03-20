@@ -1,4 +1,4 @@
-#include <iostream>
+#include <cstdio>
 #include <cstring>
 using namespace std;
 
@@ -8,7 +8,7 @@ int head[maxn], cnt, op;
 
 struct Edge {
     int to, _next;
-} edges[maxn * (maxn - 200)];
+} edges[maxn * maxn];
 
 void init() {
     cnt = 2;
@@ -36,23 +36,23 @@ void dfs(int u) {
 int main() {
     init();
     int n, m, k, u, v, ans;
-    cin >> n >> m >> k;
+    scanf("%d %d %d", &n, &m, &k);
     while(m --) {
-        cin >> u >> v;
+        scanf("%d %d", &u, &v);
         addedge(u, v);
         addedge(v, u);
     }
     while(k --) {
         ans = 0;
         memset(vis, false, sizeof vis);
-        cin >> op;
+        scanf("%d", &op);
         for(int i = 1; i <= n; i ++) {
             if(!vis[i] && i != op) {
                 dfs(i);
                 ans ++;
             }
         }
-        cout << ans - 1 << endl;
+        printf("%d\n", ans - 1);
     }
     return 0;
 }
