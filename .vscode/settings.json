@@ -20,6 +20,7 @@
         "utility": "cpp",
         "xstring": "cpp",
         "xtree": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "vector": "cpp"
     }, // 格式化时调整include的顺序（按字母排序）
 }
