@@ -2,21 +2,22 @@
     "workbench.colorTheme": "Tiny Light",
     "code-runner.executorMap": {
 
+
     
     
 
 
 
         "python": "python",
-        "cpp": "cd $dir && g++ -std=c++14 $fileName -o C:/Users/20165/Desktop/PAT-and-algorithm-contest/workspace/$fileNameWithoutExt && C:/Users/20165/Desktop/PAT-and-algorithm-contest/workspace/$fileNameWithoutExt",
+        "cpp": "cd $dir && g++ -std=c++14 $fileName -o C:/Users/Cruelking/Desktop/code/workspace/$fileNameWithoutExt && C:/Users/Cruelking/Desktop/code/workspace/$fileNameWithoutExt",
     },
     "code-runner.runInTerminal": true,
     "code-runner.ignoreSelection": true,
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
     "files.encoding":"utf8",
     "files.autoSave": "afterDelay",
     "files.associations": {
-
-    
-    
+        "iostream": "cpp"
     },
 }
