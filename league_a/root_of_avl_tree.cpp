@@ -1,102 +1,93 @@
 #include <cstdio>
 #include <cstring>
-#include <windows.h>
+#include <cmath>
 using namespace std;
 
 struct Tree {
-    int data;
-    Tree *l, *r, *pre;
-};
+    int data, high;
+    Tree *l, *r;
+} *root;
+
+int max(int a, int b) {
+    return a > b ? a : b;
+}
 
 typedef Tree * ptree;
 
-ptree real;
+int get_high(ptree root) {
+    if(root == NULL) return 0;
+    else return root -> high;
+}
 
-void right_rotary(ptree &root) {
-    ptree &pre = root -> pre, &prepre = pre -> pre;
-    ptree temp = pre;
-    if(prepre != NULL) {
-        if(prepre -> l == pre) {
-            prepre -> l = root;
-        } else {
-            prepre -> r = root;
-        }
-    }
-    root -> r = temp;
-    pre -> l = NULL;
-    pre -> pre = root;
+void update_high(ptree root) {
+    root -> high = max(get_high(root -> l), get_high(root -> r)) + 1;
+}
+
+int balance_factor(ptree root) {
+    return get_high(root -> l) - get_high(root -> r);
 }
 
 void left_rotary(ptree &root) {
-    ptree &pre = root -> pre, &prepre = pre -> pre;
-    ptree temp = pre;
-    if(prepre != NULL) {
-        if(prepre -> r == pre) {
-            prepre -> r = root;
-        } else {
-            prepre -> l = root;
-        }
-    }
-    root -> l = temp;
-    pre -> r = NULL;
-    pre -> pre = root;
+    ptree temp = root -> r;
+    root -> r = temp -> l;
+    temp -> l = root;
+    update_high(root);
+    update_high(temp);
+    root = temp;
 }
 
-void avl_insert(ptree &root, ptree &pre, int num, int flag) {
-    if(root == NULL) {
+//右旋：root做root的左儿子的右儿子，那么如果root的左儿子原本就有右儿子，需要把他变为root的左儿子。然后再将root变为他的左儿子的右儿子，记得更新这两颗子树的高度，还要将这两颗子树的
+//根节点变为root的左儿子
+
+void right_rotary(ptree &root) {
+    ptree temp = root -> l;
+    root -> l = temp -> r;
+    temp -> r = root;
+    update_high(root);
+    update_high(temp);
+    root = temp;
+}
+
+void avl_insert(ptree &root, int num) {
+    if(root == NULL) {//叶子节点，设定叶子节点高度为1
         root = new Tree;
-        root -> pre = pre;
         root -> data = num;
-        root -> l = NULL;
-        root -> r = NULL;
-        if(flag == 1) {
-            if(pre -> pre) {
-                if(pre -> pre -> r == NULL) {
-                    right_rotary(pre);
-                } else if(pre -> pre -> l == NULL) {
-                    right_rotary(pre);
+        root -> high = 1;
+        root -> l = root -> r = NULL;
+    } else {
+        if(num < root -> data) {
+            avl_insert(root -> l, num);
+            update_high(root);//在root的子树中插入新元素需要重新调整这个树的高度
+            if(balance_factor(root) == 2) {//在root的子树中插入新元素后需要检查树是否平衡
+                if(balance_factor(root -> l) == 1) {//如果root的左子树高度为1，则说明需要右旋
+                    right_rotary(root);
+                } else if(balance_factor(root -> l) == -1) {//如果root的左子树比右子树低，则需要先左旋再右旋
+                    left_rotary(root -> l);
+                    right_rotary(root);
+                } 
+            }
+        } else {
+            avl_insert(root -> r, num);
+            update_high(root);
+            if(balance_factor(root) == -2) {//如果是插入到root的右子树的话，那么root的右子树比左子树高2才需要调整
+                if(balance_factor(root -> r) == -1) {
+                    left_rotary(root);
+                } else if(balance_factor(root -> r) == 1) {
+                    right_rotary(root -> r);
                     left_rotary(root);
                 }
             }
-        } else if(flag == 2) {
-            if(pre -> pre) {
-                if(pre -> pre -> l == NULL) {
-                    left_rotary(pre);
-                } else if(pre -> pre -> r == NULL) {
-                    left_rotary(pre);
-                    right_rotary(root);
-                }
-            }
-        }
-        real = root;
-    } else {
-        if(num < root -> data) {
-            avl_insert(root -> l, root, num, 1);
-        } else {
-            avl_insert(root -> r, root, num, 2);
         }
     }
-}
-
-void print(ptree root) {
-    if(root == NULL) return;
-    printf("%d\t", root -> data);
-    print(root -> l);
-    print(root -> r);
 }
 
 int main() {
     int n, num;
     scanf("%d", &n);
-    ptree root = NULL, pre = NULL;
     while(n --) {
         scanf("%d", &num);
-        avl_insert(root, pre, num, 0);
+        avl_insert(root, num);
     }
-    while(real -> pre) {
-        real = real -> pre;
-    }
-    printf("%d\n", real -> data);
-    print(root);
+    printf("%d\n", root -> data);
     return 0;
 }
