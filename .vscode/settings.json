@@ -24,6 +24,7 @@
         "string": "cpp",
         "type_traits": "cpp",
         "random": "cpp",
-        "cctype": "cpp"
+        "cctype": "cpp",
+        "cmath": "cpp"
     },
 }
