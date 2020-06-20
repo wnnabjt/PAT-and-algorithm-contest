@@ -74,7 +74,7 @@ int main() {
     cout << endl << "Then, i will print all of your job list" << endl;
     map <string, vector <int> > :: iterator i;
     for(i = mp.begin(); i != mp.end(); i ++) {
-        // if(i -> first < temp) continue;
+        if(i -> first < temp) continue;
         cout << i -> first << ':' << endl;
         for(int j = 0; j < i -> second.size(); j ++) {
             cout << i -> second[j] << ' ';
