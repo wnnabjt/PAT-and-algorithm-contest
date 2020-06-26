@@ -90,18 +90,32 @@ int main() {
             if(it != mp.end()) {
                 mp.erase(it);
             }
-            it = mp_vip.find(mp_vip.begin() -> first);
-            mp_vip.erase(it);
+            mp_vip.erase(mp_vip.begin());
         } else {
-            num[pos] ++;
-            serve = get_serve(max(vec[pos], mp.begin() -> second.arr_time));
-            ans.push_back(A{mp.begin() -> first, serve, vec[pos] > mp.begin() -> second.arr_time ? ((vec[pos] - mp.begin() -> second.arr_time) + 30) / 60 : 0 });
-            vec[pos] = max(vec[pos], mp.begin() -> second.arr_time) + 60 * mp.begin() -> second.last_time;
-            it = mp.find(mp.begin() -> first);
-            mp.erase(it);
             it = mp_vip.find(mp.begin() -> first);
-            if(it != mp_vip.end()) {
+            int min_vip = 21 * 3600, poss;
+            for(int i = 1; i <= k; i ++) {
+                if(vec[i] < min_vip && table_vip[i]) {
+                    poss = i;
+                    min_vip = vec[i];
+                }
+            }
+            if(it != mp_vip.end() && min_vip <= it -> second.arr_time && it -> second.arr_time <= 21 * 3600) {
+                num[poss] ++;
+                serve = get_serve(it -> second.arr_time);
+                ans.push_back(A{it -> first, serve, 0});
+                vec[poss] = it -> second.arr_time + 60 * it -> second.last_time;
                 mp_vip.erase(it);
+                mp.erase(mp.begin());
+            } else {
+                num[pos] ++;
+                serve = get_serve(max(vec[pos], mp.begin() -> second.arr_time));
+                ans.push_back(A{mp.begin() -> first, serve, vec[pos] > mp.begin() -> second.arr_time ? ((vec[pos] - mp.begin() -> second.arr_time) + 30) / 60 : 0 });
+                vec[pos] = max(vec[pos], mp.begin() -> second.arr_time) + 60 * mp.begin() -> second.last_time;
+                mp.erase(mp.begin());
+                if(it != mp_vip.end()) {//这里错了没看出来
+                    mp_vip.erase(it);
+                }
             }
         }
     }
