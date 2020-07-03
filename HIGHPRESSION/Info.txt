@@ -1,0 +1,3 @@
+2
+456  black  22  female  A  1  120 zzz eat_healthy
+789  steve  20  male  B  2  109 190 zz none

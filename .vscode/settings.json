@@ -25,6 +25,9 @@
         "type_traits": "cpp",
         "random": "cpp",
         "cctype": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "cstdio": "cpp",
+        "deque": "cpp",
+        "vector": "cpp"
     },
 }
