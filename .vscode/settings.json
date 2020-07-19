@@ -28,6 +28,7 @@
         "cmath": "cpp",
         "cstdio": "cpp",
         "deque": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "cstring": "cpp"
     },
 }
